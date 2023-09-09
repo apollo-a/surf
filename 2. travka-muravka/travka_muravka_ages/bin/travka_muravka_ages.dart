@@ -182,20 +182,24 @@ void main() {
   Set<AgriculturalMachinery> uniqueMachinery = {};
 
   // Формируем список уникальной техники из обоих map
-  for (List<Territory> territories in mapBefore2010.values) {
-    uniqueMachinery.addAll(territories.expand((territory) => territory.machineries));
-  }
+  mapBefore2010.values.forEach((territories) {
+    territories.forEach((territory) {
+      uniqueMachinery.addAll(territory.machineries);
+    });
+  });
 
-  for (List<Territory> territories in mapAfter2010.values) {
-    uniqueMachinery.addAll(territories.expand((territory) => territory.machineries));
-  }
+  mapAfter2010.values.forEach((territories) {
+    territories.forEach((territory) {
+      uniqueMachinery.addAll(territory.machineries);
+    });
+  });
 
   // Выполняем подсчет возрастов для уникальной техники и считаем средний возраст
   List<int> ages = [];
-  for (AgriculturalMachinery machinery in uniqueMachinery) {
+  uniqueMachinery.forEach((machinery) {
     int age = currentYear - machinery.releaseDate.year;
     ages.add(age);
-  }
+  });
 
   double averageAge = ages.reduce((a, b) => a + b) / ages.length;
   print('Средний возраст всей техники: $averageAge');
